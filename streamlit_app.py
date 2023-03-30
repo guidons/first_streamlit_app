@@ -4,12 +4,6 @@ import requests
 import snowflake.connector
 from urllib.error import URLError
 
-# Connect to Snowflake 
-# my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-# my_cur = my_cnx.cursor()
-# my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
-# my_data_rows = my_cur.fetchall()
-
 # Import data and set index
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 my_fruit_list = my_fruit_list.set_index('Fruit')
@@ -66,8 +60,14 @@ if streamlit.button('Get Fruit Load List'):
   streamlit.dataframe(my_data_rows)
 
 # Allow the user to add a fruit to the list
-fruit_addition = streamlit.text_input('What fruit would you like to add?','jackfruit')
-streamlit.write('Thanks for adding', fruit_addition)
+def insert_row_snowflake(new_fruit):
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("insert into pc_rivery_db.public.fruit_load_list values ('from streamlit')")
+    return "Thanks for adding: " + new_fruit
 
-# Test
-# my_cur.execute("insert into pc_rivery_db.public.fruit_load_list values ('from streamlit')")
+fruit_addition = streamlit.text_input('What fruit would you like to add?','jackfruit')
+
+if streamlit.button('Add a Fruit to the List'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  new_fruit_result = insert_row_snowflake(fruit_addition)
+  streamlit.text(new_fruit_result)
