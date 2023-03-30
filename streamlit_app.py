@@ -43,3 +43,7 @@ streamlit.dataframe(fruityvice_normalized)
 # Test Snowflake connection
 streamlit.header("The fruit load list contains:")
 streamlit.dataframe(my_data_rows)
+
+# Allow the user to add a fruit to the list
+fruit_addition = streamlit.text_input('What fruit would you like to add?','jackfruit')
+streamlit.write('Thanks for adding', fruit_addition)
