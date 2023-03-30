@@ -70,4 +70,4 @@ fruit_addition = streamlit.text_input('What fruit would you like to add?','jackf
 streamlit.write('Thanks for adding', fruit_addition)
 
 # Test
-my_cur.execute("insert into pc_rivery_db.public.fruit_load_list values ('from streamlit')")
+# my_cur.execute("insert into pc_rivery_db.public.fruit_load_list values ('from streamlit')")
